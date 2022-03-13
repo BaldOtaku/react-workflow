@@ -1,0 +1,29 @@
+{
+  "name": "react-workflow",
+  "version": "1.0.0",
+  "description": "react project template",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve --config script/dev.js",
+    "build": "npm run clean && webpack --config script/build.js",
+    "clean": "rimraf dist"
+  },
+  "keywords": [],
+  "author": "冬二",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.3",
+    "html-webpack-plugin": "^5.5.0",
+    "rimraf": "^3.0.2",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
