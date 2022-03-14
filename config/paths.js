@@ -9,5 +9,5 @@ module.exports = {
   appDist: resolve('dist'),
   appPublic: resolve('public'),
   appHtml: resolve('public/index.html'),
-  appMainJs: resolve('src/main.js')
+  appMainJs: resolve('src/main.tsx')
 }

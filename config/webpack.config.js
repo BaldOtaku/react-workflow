@@ -1,6 +1,7 @@
 const paths = require('../config/paths');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const isEnvDevelopment = process.env.NODE_ENV === 'development';
 const isEnvProduction = process.env.NODE_ENV === 'production';
@@ -18,15 +19,46 @@ module.exports = {
       '@': paths.appSrc
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json'],
+    modules: [paths.appSrc, 'node_modules']
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        include: paths.appSrc,
+        loader: require.resolve('babel-loader'),
+        options: {
+          customize: require.resolve(
+            'babel-preset-react-app/webpack-overrides'
+          ),
+          presets: [
+            [
+              require.resolve('babel-preset-react-app'),
+              {
+                runtime: 'automatic',
+              },
+            ],
+          ],
+          cacheDirectory: true,
+          cacheCompression: false
+        },
+      },
+      {
+        test: /\.(js|mjs)$/,
+        exclude: /@babel(?:\/|\\{1,2})runtime/,
+        loader: require.resolve('babel-loader'),
+        options: {
+          presets: [
+            [
+              require.resolve('babel-preset-react-app/dependencies'),
+              { helpers: true },
+            ],
+          ],
+          cacheDirectory: true,
+          cacheCompression: false,
+          babelrc: false,
+          configFile: false
+        },
       },
       {
         test: /\.(png|jpe?g|gif|webp|avif)(\?.*)?$/,
@@ -49,6 +81,14 @@ module.exports = {
           filename: 'fonts/[name].[hash:8][ext]',
         },
       },
+    ]
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+      })
     ]
   },
   plugins: [
